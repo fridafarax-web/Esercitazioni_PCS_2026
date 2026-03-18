@@ -28,6 +28,7 @@ media=media/N;
 for(int i=0;i<N;i++){
     varianza=varianza +pow(media-arr[i], 2); //pow elevamento a potenza
 }
+varianza=varianza/N;
 dev_std=sqrt(varianza);
 
 cout << "Il minimo del vettore arr è: "<< minimo <<"\n";
