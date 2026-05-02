@@ -1,0 +1,14 @@
+1. Dall'analisi dei benchmark eseguiti su tipi int, double e float, si osserva un comportamento costante:
+- Vettori piccoli: gli algoritmi logaritmici come il Mergesort risultano più lenti. In questa parte, Insertion Sort è il migliore.
+- Vettori medi/grandi: il Quicksort risolve il problema molto più velocemente del Bubble Sort.
+
+2. Osservazioni sugli algoritmi
+Quicksort: risulta l'algoritmo più performante tra quelli implementati.
+Mergesort: è efficiente su grandi vettori, ma mostra tempi di esecuzione superiori al Quicksort.
+Bubble Sort, Selection, Insertion: il Bubblesort è il più lento. L'Insertion Sort è il migliore.
+
+3. Il confronto con std::sort() dimostra che essa è quasi sempre la più veloce.
+
+4. Proposta di Quicksort Ibrido
+Dalle prove fatte, abbiamo capito che il Quicksort è migliore sui grandi numeri, ma l'Insertion Sort vince quando il vettore è molto piccolo.
+La soluzione migliore è quindi creare un algoritmo ibrido, dove il Quicksort inizia a dividere il lavoro normalmente, non appena si ritrova a dover ordinare un pezzetto piccolo di dati entra in gioco l'Insertion Sort per finire il lavoro velocemente.
