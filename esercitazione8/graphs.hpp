@@ -67,19 +67,13 @@ class unidirected_graph
         set<unidirected_edge<T>> edges; 
         set<T> nodes;    
         map<T,set<T>> nnear; 
-        map<unidirected_edge<T>,int>  ednum;
-        unordered_map<int,unidirected_edge<T>> edat; 
-        int contatore = 0;
-    public:
+        public:
         unidirected_graph()=default;
         unidirected_graph(const unidirected_graph& other)
         {
             edges = other.edges;
             nodes = other.nodes;
             nnear = other.nnear;
-            ednum = other.ednum;
-            edat = other.edat;
-            contatore = other.contatore;
         }
 
         set<T> neighours(const T& node) const
@@ -100,9 +94,6 @@ class unidirected_graph
                 nodes.insert(newarc.to());
                 nnear[newarc.from()].insert(newarc.to());
                 nnear[newarc.to()].insert(newarc.from());
-                ednum[newarc] = contatore;
-                edat.insert({contatore,newarc});
-                contatore++;
             }
         }
 
@@ -111,21 +102,43 @@ class unidirected_graph
 
         int edge_number(const unidirected_edge<T>& edge) const
         {
-            if(ednum.find(edge) != ednum.end()) return ednum.at(edge);
-            else return -1;
+            auto target = edges.find(edge);
+        
+            if (target == edges.end()) {
+                return -1;
+            }
+
+            int index = 0;
+            for (auto it = edges.begin(); it != target; ++it) {
+                index++;
+            }
+            
+            return index;
         }
-        unidirected_edge<T> edge_at(int num) const
+
+        unidirected_edge<T> edge_at(size_t num) const
         {
-            return edat.at(num);
+            if (num >= edges.size()) 
+            {
+                std::cerr << "Errore: Indice dell'arco non valido" << std::endl;
+                return unidirected_edge<T>(); 
+            }
+
+            auto it = edges.begin();
+            
+            for (size_t i = 0; i < num; i++) 
+            {
+                ++it; 
+            }
+            
+            return *it; 
         }
 
         unidirected_graph<T> operator-(const unidirected_graph<T>& other) const
         {
             unidirected_graph<T> result;
-            int n = edges.size();
-            for(int i=0; i<n; i++)
+            for(const auto& corrente : edges)
             {
-                unidirected_edge<T> corrente = edat.at(i);
                 if(other.edges.find(corrente) == other.edges.end())
                 {
                    result.add_edge(corrente);
@@ -141,12 +154,16 @@ template<typename T>
 std::ostream&
 operator<<(std::ostream& os, const unidirected_graph<T>& g)
 {
-    int n = g.all_edges().size();
-    os<<"{";
-    for(int i = 0; i<n;i++)
+    auto all_the_edges = g.all_edges();
+    size_t n = all_the_edges.size();
+    size_t i = 0;
+    
+    os << "{";
+    for(const auto& edge : all_the_edges)
     {
-        os << g.edge_at(i);
-        if(i!=n-1) os << ", ";
+        os << edge;
+        if(i != n - 1) os << ", ";
+        i++;
     }
     os << "}\n";
     return os;
