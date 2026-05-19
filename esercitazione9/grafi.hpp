@@ -105,7 +105,7 @@ class unidirected_graph
                 nodi.insert(newarc.to());
                 nadiacenti[newarc.from()].insert(newarc.to());
                 nadiacenti[newarc.to()].insert(newarc.from());
-                pesimap[newarc] = 0;
+                pesimap[newarc] = 1;
             }
         }
 
